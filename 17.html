@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snowfall Effect with Button Sequence</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #1e3c72, #2a5298);
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        #hiddenText, #finalText {
+            font-size: 2.5em;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .button {
+            padding: 15px 30px;
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.5s ease;
+            display: none;
+        }
+
+        .button:first-of-type {
+            display: inline-block; /* The first button is initially visible */
+        }
+
+        .button:hover {
+            background-color: #e63e00;
+        }
+
+        .button.floating {
+            position: fixed;
+            bottom: 50%;
+            left: 50%;
+            transform: translate(-50%, -100vh);
+            transition: transform 2s ease-in;
+        }
+
+        #hiddenText.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #finalText {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            display: none;
+        }
+
+        #finalText.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Snowflake Styles */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background: white;
+            opacity: 0.8;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0.3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>A napi üzened itt lapul a gomb alatt</h1>
+    <button class="button" id="revealButton">17. nap: Hó alatt a szív 🎄</button>
+    <p id="hiddenText">
+        Látod a hótakarót, hallod-e még? <br>
+        Alatta a szívem dobban feléd. <br>
+        Titkomat rejti a tél hidege, <br>
+        De ha akarod, elmondom neked.❄️❤️
+        
+        
+    </p>
+    <button class="button" id="floatButton">Akarom</button>
+    <div id="finalText">Szeretlek💞</div>
+
+    <script>
+        const revealButton = document.getElementById('revealButton');
+        const hiddenText = document.getElementById('hiddenText');
+        const floatButton = document.getElementById('floatButton');
+        const finalText = document.getElementById('finalText');
+        const bodyContent = document.body;
+
+        // First button reveals text
+        revealButton.addEventListener('click', () => {
+            revealButton.style.display = 'none';
+            hiddenText.classList.add('visible');
+
+            // Show the second button after a delay
+            setTimeout(() => {
+                floatButton.style.display = 'inline-block';
+            }, 2000);
+        });
+
+        // Second button floats upward and reveals final text
+        floatButton.addEventListener('click', () => {
+            
+            // Hide all other content
+            setTimeout(() => {
+                bodyContent.innerHTML = '';
+                bodyContent.appendChild(finalText);
+                finalText.classList.add('visible');
+            }, 2000); // Delay to sync with the floating effect
+        });
+
+        // Create snowfall effect
+        const snowflakeCount = 100;
+
+        for (let i = 0; i < snowflakeCount; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+
+            // Randomize size, position, and animation duration
+            const size = Math.random() * 5 + 5 + 'px';
+            snowflake.style.width = size;
+            snowflake.style.height = size;
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 5 + 's';
+            snowflake.style.animationDelay = Math.random() * 5 + 's';
+
+            // Append to body
+            document.body.appendChild(snowflake);
+        }
+    </script>
+</body>
+</html>
